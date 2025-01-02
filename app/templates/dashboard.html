@@ -1,0 +1,15 @@
+{% include 'base.html' %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<p>Saldo atual: R$ {{ balance }}</p>
+<p>Receitas: R$ {{ total_income }}</p>
+<p>Despesas: R$ {{ total_expense }}</p>
+
+<h2>Últimas Transações</h2>
+<ul>
+  {% for transaction in transactions %}
+    <li>{{ transaction.date }} - {{ transaction.description }}: R$ {{ transaction.amount }}</li>
+  {% endfor %}
+</ul>
+{% endblock %}
