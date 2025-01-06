@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% load form_tags %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="text-center mb-4">Adicionar Transação</h2>
+
+  <form method="post" class="needs-validation" novalidate>
+    {% csrf_token %}
+    <div class="row g-3">
+      <!-- Descrição -->
+      <div class="col-md-12">
+        <label for="id_description" class="form-label">Descrição</label>
+        {{ form.description|add_class:"form-control" }}
+      </div>
+
+      <!-- Valor -->
+      <div class="col-md-6">
+        <label for="id_amount" class="form-label">Valor</label>
+        {{ form.amount|add_class:"form-control" }}
+      </div>
+
+      <!-- Data -->
+      <div class="col-md-6">
+        <label for="id_date" class="form-label">Data</label>
+        {{ form.date|add_class:"form-control" }}
+      </div>
+
+      <!-- Tipo -->
+      <div class="col-md-6">
+        <label for="id_type" class="form-label">Tipo</label>
+        {{ form.type_choice|add_class:"form-select" }}
+      </div>
+
+      <!-- Categoria -->
+      <div class="col-md-6">
+        <label for="id_category" class="form-label">Categoria</label>
+        {{ form.category|add_class:"form-control" }}
+      </div>
+    </div>
+
+    <!-- Botões -->
+    <div class="mt-4 text-center">
+      <button type="submit" class="btn btn-primary">Adicionar Transação</button>
+      <a href="{% url 'transaction_list' %}" class="btn btn-secondary">Cancelar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

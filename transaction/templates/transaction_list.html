@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+<p>{% include 'components/_form_filter.html' %}</p>
+
+<a href="{% url 'transaction_add' %}" class="btn btn-primary">Adicionar Transação</a>
+<table class="table table-striped table-hover mt-4">
+  <thead class="table-dark">
+    <tr>
+      <th>Descrição</th>
+      <th>Valor</th>
+      <th>Data</th>
+      <th>Tipo</th>
+      <th>Categoria</th>
+      <th>Ações</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for transaction in transactions %}
+    <tr>
+      <td>{{ transaction.description }}</td>
+      <td>R$ {{ transaction.amount }}</td>
+      <td>{{ transaction.date }}</td>
+      <td>{{ transaction.get_type_choice_display }}</td>
+      <td>{{ transaction.category }}</td>
+      <td>
+        <a href="{% url 'transaction_edit' transaction.pk %}" class="btn btn-sm btn-warning">Editar</a>
+        <a href="{% url 'transaction_delete' transaction.pk %}" class="btn btn-sm btn-danger">Excluir</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

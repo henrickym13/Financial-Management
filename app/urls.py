@@ -7,4 +7,5 @@ urlpatterns = [
     path('', views.dashboard, name='dashboard'),
     path('', include('category.urls')),
     path('', include('user.urls')),
+    path('', include('transaction.urls')),
 ]
