@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="card border-danger">
+    <div class="card-header bg-danger text-white">
+      <h4 class="text-center">Excluir Categoria</h4>
+    </div>
+    <div class="card-body">
+      <p class="text-center">Tem certeza de que deseja excluir a categoria <strong>"{{ category.name }}"</strong>?</p>
+      <p class="text-center text-muted">Esta ação não pode ser desfeita.</p>
+      <form method="post" class="d-flex justify-content-center mt-3">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger me-2">Sim, excluir</button>
+        <a href="{% url 'category_list' %}" class="btn btn-secondary">Cancelar</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

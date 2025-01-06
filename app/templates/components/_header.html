@@ -8,7 +8,7 @@
             {% if user.is_authenticated %}
                 <li class="nav-item"><a class="nav-link text-white">Olá, {{ user.username }}</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'category' %}">Categoria</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'category_list' %}">Categoria</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'transaction_list' %}">Transações</a></li>
                 <form id="logout-form" action="{% url 'logout' %}" method="POST" style="display: inline;">
                     {% csrf_token %}
