@@ -1,15 +1,69 @@
-{% include 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-<h1>Dashboard</h1>
-<p>Saldo atual: R$ {{ balance }}</p>
-<p>Receitas: R$ {{ total_income }}</p>
-<p>Despesas: R$ {{ total_expense }}</p>
+<div class="container mt-5">
+  <!-- Saldo Atual -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <div class="card text-white bg-success">
+        <div class="card-body text-center">
+          <h5>Saldo Atual</h5>
+          <h3>R$ {{ balance }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-primary">
+        <div class="card-body text-center">
+          <h5>Total de Receitas</h5>
+          <h3>R$ {{ total_income }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-danger">
+        <div class="card-body text-center">
+          <h5>Total de Despesas</h5>
+          <h3>R$ {{ total_expense }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<h2>Últimas Transações</h2>
-<ul>
-  {% for transaction in transactions %}
-    <li>{{ transaction.date }} - {{ transaction.description }}: R$ {{ transaction.amount }}</li>
-  {% endfor %}
-</ul>
+  <!-- Categorias -->
+  <div class="row">
+    <div class="col-md-6">
+      <h4>Categorias Mais Usadas</h4>
+      <ul class="list-group">
+        {% for category in popular_categories %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          {{ category.name }}
+          <span class="badge bg-primary rounded-pill">{{ category.total_transactions }}</span>
+        </li>
+        {% empty %}
+        <li class="list-group-item">Nenhuma categoria encontrada.</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Últimas Transações -->
+    <div class="col-md-6">
+      <h4>Últimas Transações</h4>
+      <ul class="list-group">
+        {% for transaction in recent_transactions %}
+        <li class="list-group-item">
+          {{ transaction.date }} - <strong>{{ transaction.description }}</strong>: R$ {{ transaction.amount }}
+          {% if transaction.type_choice == 'income' %}
+          <span class="badge bg-success">{{ transaction.get_type_display }}</span>
+          {% else %}
+          <span class="badge bg-danger">{{ transaction.get_type_display }}</span>
+          {% endif %}
+        </li>
+        {% empty %}
+        <li class="list-group-item">Nenhuma transação encontrada.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
 {% endblock %}
