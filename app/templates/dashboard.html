@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block content %}
 <div class="container mt-5">
   <!-- Saldo Atual -->
@@ -32,22 +34,21 @@
 
   <!-- Categorias -->
   <div class="row">
-    <div class="col-md-6">
-      <h4>Categorias Mais Usadas</h4>
-      <ul class="list-group">
-        {% for category in popular_categories %}
-        <li class="list-group-item d-flex justify-content-between align-items-center">
-          {{ category.name }}
-          <span class="badge bg-primary rounded-pill">{{ category.total_transactions }}</span>
-        </li>
-        {% empty %}
-        <li class="list-group-item">Nenhuma categoria encontrada.</li>
-        {% endfor %}
-      </ul>
+    <div class="col-md-4">
+      <div class="card bg-white">
+        <p>
+        <h4 class="text-center">Relação de Receita e Despesa</h4>
+        <canvas id="incomeExpenseChart" width="400" height="400"></canvas></p>
+      </div>
     </div>
 
+    <script type="application/json" id="total-income">{{ total_income|floatformat:2 }}</script>
+    <script type="application/json" id="total-expense">{{ total_expense|floatformat:2 }}</script>
+
+    <!-- Importar o arquivo externo -->
+    <script src="{% static 'app/js/dashboard.js' %}"></script>
     <!-- Últimas Transações -->
-    <div class="col-md-6">
+    <div class="col-md-8">
       <h4>Últimas Transações</h4>
       <ul class="list-group">
         {% for transaction in recent_transactions %}
