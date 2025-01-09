@@ -21,17 +21,3 @@ def get_calculate_transactions(user):
         balance = balance,
         recent_transactions = recent_transactions,
     )
-
-
-def get_category_data(user):
-    category_data = Category.objects.filter(user=user).annotate(
-        total_amount=Sum('transaction__amount')
-    ).order_by('-total_amount')
-
-    category_labels = [category.name for category in category_data if (category.total_amount or 0) > 0]
-    category_values = [float(category.total_amount) or 0 for category in category_data if (category.total_amount or 0) > 0]
-    
-    return dict(
-        category_labels = json.dumps(category_labels),
-        category_values = json.dumps(category_values),
-    )
