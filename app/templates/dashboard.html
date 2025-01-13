@@ -4,7 +4,6 @@
 
 {% block content %}
 <div class="container mt-5">
-  <!-- Saldo Atual -->
   <div class="row mb-4">
     <div class="col-md-4">
       <div class="card text-white bg-success">
@@ -45,25 +44,52 @@
     <script type="application/json" id="total-income">{{ total_income|floatformat:2 }}</script>
     <script type="application/json" id="total-expense">{{ total_expense|floatformat:2 }}</script>
 
-    <script src="{% static 'app/js/dashboard.js' %}"></script>
-    
     <div class="col-md-8">
-      <h4>Últimas Transações</h4>
-      <ul class="list-group">
-        {% for transaction in recent_transactions %}
-        <li class="list-group-item">
-          {{ transaction.date }} - <strong>{{ transaction.description }}</strong>: R$ {{ transaction.amount }}
-          {% if transaction.type_choice == 'income' %}
-          <span class="badge bg-success">{{ transaction.get_type_display }}</span>
-          {% else %}
-          <span class="badge bg-danger">{{ transaction.get_type_display }}</span>
-          {% endif %}
-        </li>
-        {% empty %}
-        <li class="list-group-item">Nenhuma transação encontrada.</li>
-        {% endfor %}
-      </ul>
+      <div class="card bg-white">
+        <p>
+        <h4 class="text-center">Total de Gastos por Mês</h4>
+        <canvas id="monthlyExpenseChart" width="400" height="193"></canvas>
+        </p>
+      </div>
     </div>
+
+    <script type="application/json" id="months-data">
+      {{ months|json_script:"months-data" }}
+    </script>
+    <script type="application/json" id="totals-data">
+      {{ totals|json_script:"totals-data" }}
+    </script>
+    <script src="{% static 'app/js/dashboard.js' %}"></script>
+
+    <p>
+    <div class="col-md-12">
+      <h4>Últimas Transações</h4>
+      <table class="table table-striped table-bordered table-responsive">
+        <thead class="table-dark">
+          <tr>
+            <th>Data</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for transaction in recent_transactions %}
+          <tr>
+            {% if transaction.type_choice == 'income' %}
+            <td class="bg-success text-white">{{ transaction.date }}</td>
+            <td class="bg-success text-white"><strong>{{ transaction.description }}</strong></td>
+            <td class="bg-success text-white">R$ {{ transaction.amount }}</td>
+            {% else %}
+            <td class="bg-danger text-white">{{ transaction.date }}</td>
+            <td class="bg-danger text-white"><strong>{{ transaction.description }}</strong></td>
+            <td class="bg-danger text-white">R$ {{ transaction.amount }}</td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    </p>
   </div>
 </div>
 {% endblock %}
