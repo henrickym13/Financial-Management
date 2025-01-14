@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from . import metrics
 
+
 @login_required
 def dashboard(request):
     transactions = metrics.get_calculate_transactions(request.user)
@@ -16,4 +17,3 @@ def dashboard(request):
         'totals': expense_months['totals'],
     }
     return render(request, 'dashboard.html', context)
-    

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Histórico de {{ month }} de {{ year }}</h2>
+
+    <!-- Totais -->
+    <div class="row my-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-success">
+                <div class="card-body text-center">
+                    <h5>Total de Receitas</h5>
+                    <h3>R$ {{ total_income|floatformat:2 }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-danger">
+                <div class="card-body text-center">
+                    <h5>Total de Despesas</h5>
+                    <h3>R$ {{ total_expense|floatformat:2 }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-white bg-primary">
+                <div class="card-body text-center">
+                    <h5>Receita Liquida do Mês</h5>
+                    <h3>R$ {{ net_value|floatformat:2 }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Histórico Detalhado -->
+    <table class="table table-striped table-bordered table-responsive table-hover mt-4">
+        <thead class="table-dark">
+            <tr>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Tipo</th>
+                <th>Valor (R$)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transaction_history %}
+            <tr>
+                {% if transaction.type_choice == 'income' %}
+                <td class="bg-success text-white">{{ transaction.date|date:"d/m/Y" }}</td>
+                <td class="bg-success text-white">{{ transaction.description }}</td>
+                <td class="bg-success text-white">{{ transaction.get_type_choice_display }}</td>
+                <td class="bg-success text-white">R$ {{ transaction.amount }}</td>
+                {% else %}
+                <td class="bg-danger text-white">{{ transaction.date|date:"d/m/Y" }}</td>
+                <td class="bg-danger text-white">{{ transaction.description }}</td>
+                <td class="bg-danger text-white">{{ transaction.get_type_choice_display }}</td>
+                <td class="bg-danger text-white">R$ {{ transaction.amount }}</td>
+                {% endif %}
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">Nenhuma transação encontrada para este mês.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+        <a href="{% url 'monthly_summary' %}" class="btn btn-secondary">Voltar</a>
+    </div>
+</div>
+{% endblock %}

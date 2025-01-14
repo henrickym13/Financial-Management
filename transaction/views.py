@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Transaction
 from .forms import TransactionForm, TransactionFilterForm
+from . import metrics
 
 
 # Create your views here.
@@ -71,3 +72,28 @@ def transaction_delete(request, pk):
         messages.success(request, 'Transação excluída com sucesso!')
         return redirect('transaction_list')
     return render(request, 'transaction_delete.html', {'transaction': transaction})
+
+
+@login_required
+def monthly_summary(request):
+    monthly_data = metrics.get_monthly_summary(request.user)
+
+    context = {
+        'monthly_data': monthly_data,
+    }
+    return render(request, 'monthly_summary.html', context)
+
+
+@login_required
+def monthly_history(request, year, month):
+    transaction_history = metrics.get_monthly_history(request.user, year, month)
+
+    context = {
+        'transaction_history': transaction_history['transaction_history'],
+        'total_income': transaction_history['total_income'],
+        'total_expense': transaction_history['total_expense'],
+        'net_value': transaction_history['net_value'],
+        'month': transaction_history['month'],
+        'year': transaction_history['year'],
+    }
+    return render(request, 'monthly_history.html', context)
